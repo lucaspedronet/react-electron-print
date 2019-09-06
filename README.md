@@ -1,2 +1,2 @@
 # react-electron-print
-Exemplo de uma aplicação DeskTop utilizando tecnologias web, para esse fim utilizaremos o Electron, ReactJS e NodeJS. Aplicação tem por objetivo demostrar uma introdução ao Electron, para isso eu me propus desenvolver um recurso onde um usuário consiga realizar um impressão de arquivo .txt.
+Exemplo de uma aplicação DeskTop com o Electron, este cara nos permite utilizar tecnologias web para desenvolver aplicações DeskTop, além do electron, vamos fazer uso do ReactJS e NodeJS. Aplicação tem por objetivo demostrar uma introdução ao Electron, pensando nisso me propus a desenvolver um recurso que permita ao usuário realizar uma impressão de arquivo .txt em uma impressora que esteja instalada em sua máquina.
