@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "electron": "^6.0.7"
+  },
+  "name": "react-electron-print",
+  "description": "Exemplo de uma aplicação DeskTop com o Electron, este cara nos permite utilizar tecnologias web para desenvolver aplicações DeskTop, além do electron, vamos fazer uso do ReactJS e NodeJS. Aplicação tem por objetivo demostrar uma introdução ao Electron, pensando nisso me propus a desenvolver um recurso que permita ao usuário realizar uma impressão de arquivo .txt em uma impressora que esteja instalada em sua máquina.",
+  "version": "0.0.1",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucaspedronet/react-electron-print.git"
+  },
+  "author": "Lucas Pedro Lopes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucaspedronet/react-electron-print/issues"
+  },
+  "homepage": "https://github.com/lucaspedronet/react-electron-print#readme"
+}
