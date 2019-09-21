@@ -9,5 +9,6 @@ var mainWindow = null
     show: true
   })
 
+  mainWindow.loadURL(`file://${__dirname}/public/index.html`)
   
 })
