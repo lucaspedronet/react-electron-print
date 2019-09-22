@@ -1,6 +1,9 @@
 const { BrowserWindow, app, ipcMain,  } = require("electron");
+let onlineStatusWindow
 
 app.on("ready", () => {
+  onlineStatusWindow = new BrowserWindow({ width: 0, height: 0, show: false })
+  onlineStatusWindow.loadURL(`file://${__dirname}/index.html`)
 var mainWindow = null
 
   mainWindow = new BrowserWindow({
