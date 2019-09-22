@@ -1,10 +1,11 @@
 const { BrowserWindow, app, ipcMain,  } = require("electron");
+
 let onlineStatusWindow
 
 app.on("ready", () => {
   onlineStatusWindow = new BrowserWindow({ width: 0, height: 0, show: false })
   onlineStatusWindow.loadURL(`file://${__dirname}/index.html`)
-var mainWindow = null
+  var mainWindow = null
 
   mainWindow = new BrowserWindow({
     height: 600,
@@ -15,7 +16,9 @@ var mainWindow = null
     }
   })
 
-  mainWindow.loadURL(`file://${__dirname}/public/index.html`)
+  // mainWindow.loadURL(`file://${__dirname}/public/index.html`)
+  mainWindow.loadURL("http://localhost:3000");
+  mainWindow.webContents.openDevTools()
 
   ipcMain.on("buscar-impressoras", (event, arg) => {
     console.log(event)
@@ -26,7 +29,7 @@ var mainWindow = null
 
     windPrint.webContents.on("did-finish-load", () => {
       windPrint.webContents.print({ silent: true }, (succees, err) => {
-        if(err) throw new err();
+        if(err) throw err;
         console.log(succees)
       })
     })
