@@ -1,27 +1,15 @@
 const { BrowserWindow, app, ipcMain } = require("electron");
 
-<<<<<<< HEAD
-let mainWindow = null
-=======
 let onlineStatusWindow
 
 app.on("ready", () => {
   onlineStatusWindow = new BrowserWindow({ width: 0, height: 0, show: false })
   onlineStatusWindow.loadURL(`file://${__dirname}/index.html`)
+  
   var mainWindow = null
->>>>>>> develop
-
-function createWindow(){
   mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
-<<<<<<< HEAD
-    show: true
-  });
-  
-  // mainWindow.loadURL(`file://${__dirname}/public/index.html`);
-  mainWindow.loadURL("http://localhost:3000");
-=======
     show: true,
     webPreferences: {
       nodeIntegration: true
@@ -49,11 +37,8 @@ function createWindow(){
     event.returnValue = printers
     
   })
->>>>>>> develop
   
   mainWindow.on("closed", function() {
     mainWindow = null;
   });
-}
-
-app.on("ready", createWindow);
+})
