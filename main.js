@@ -34,7 +34,18 @@ app.on("ready", () => {
       });
     });
 
-    event.returnValue = printers;
+    event.returnValue = new Promise((resolve, reject) => {
+      windPrint.webContents.on("did-finish-load", () => {
+        windPrint.webContents.print(
+          { silent: true, deviceName: "" },
+          (success, err) => {
+            if (err) throw reject(err);
+            console.log(success);
+            resolve(success);
+          }
+        );
+      });
+    });
   });
 
   mainWindow.on("closed", function() {
