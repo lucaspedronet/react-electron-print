@@ -30,6 +30,7 @@ app.on("ready", createWindow)
 
 ipcMain.on("buscar-impressoras", (event, arg) => {
   console.log(arg)
+  
   const windPrint = new BrowserWindow({ show: false });
   var printers = windPrint.webContents.getPrinters()
 

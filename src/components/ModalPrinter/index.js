@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Form, Row, Col } from 'react-bootstrap';
 
 const { ipcRenderer } = window.require("electron")
 // import { Container } from './styles';
@@ -11,6 +11,14 @@ export default class ModalPrinter extends Component {
     this.state = {
       printers: []
     }
+  }
+
+  componentDidMount(){}
+
+  componentWillMount(){
+    this.setState({
+      printers: this.getPrinters()
+    })
   }
   
   handlePrinters = () => {
@@ -28,22 +36,22 @@ export default class ModalPrinter extends Component {
   render() {
     return (
       <div>
-        <button 
-          title="buscar impressoras"
-          onClick={this.handlePrinters}
-        >Buscar impressoras</button>
-        <Button>
-          Deu certo!
-        </Button>
-        <ul>
-          {
-            this.state.printers.map(print => (
-              <div key={print.name} >
-                <li> {print.name} </li>
-              </div>
-            ))
-          }
-        </ul>
+        <Form>
+          <Row>
+            <Col>
+              <Form.Group controlId="formGridState">
+                <Form.Label>State</Form.Label>
+                <Form.Control as="select">
+                  {this.state.printers.map(print => (
+                      <div key={print.name} >
+                        <option>{print.name}</option>
+                      </div>
+                    ))}
+                </Form.Control>
+              </Form.Group>
+            </Col>
+          </Row>
+        </Form>
       </div>)
   }
 }
