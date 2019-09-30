@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Form, Row, Col } from 'react-bootstrap';
+
+import { Container } from './styles';
 
 const { ipcRenderer } = window.require("electron")
-// import { Container } from './styles';
 
 export default class ModalPrinter extends Component {
   
@@ -35,23 +35,8 @@ export default class ModalPrinter extends Component {
 
   render() {
     return (
-      <div>
-        <Form>
-          <Row>
-            <Col>
-              <Form.Group controlId="formGridState">
-                <Form.Label>State</Form.Label>
-                <Form.Control as="select">
-                  {this.state.printers.map(print => (
-                      <div key={print.name} >
-                        <option>{print.name}</option>
-                      </div>
-                    ))}
-                </Form.Control>
-              </Form.Group>
-            </Col>
-          </Row>
-        </Form>
-      </div>)
+      <Container>
+      </Container>
+      )
   }
 }

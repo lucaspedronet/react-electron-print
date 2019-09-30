@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@rocketseat/unform": "^1.6.1",
     "bootstrap": "^4.3.1",
     "electron": "6.0.9",
     "react": "^16.9.0",
