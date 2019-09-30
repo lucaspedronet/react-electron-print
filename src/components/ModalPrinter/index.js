@@ -1,5 +1,22 @@
 import React, { Component } from 'react';
-import { Form, Select } from '@rocketseat/unform';
+import { 
+  CustomInput,
+  ModalHeader, 
+  ModalFooter,
+  CardFooter,
+  ModalBody, 
+  FormGroup,
+  CardTitle,
+  CardBody,
+  Button,
+  Input,
+  Form,
+  Label,
+  Modal, 
+  Card,
+  Row, } from 'reactstrap';
+
+import Select from 'react-select'  
 import { Container } from './styles';
 
 const { ipcRenderer } = window.require("electron")
@@ -9,20 +26,29 @@ export default class ModalPrinter extends Component {
   constructor(params) {
     super(params)
     this.state = {
-      printers: []
+      printers: [],
+      modal: false,
+      lessPrinting: false
     }
+
+    this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount(){
     console.log(this.state)
   }
 
-  componentWillMount(){
+  componentWillMount() {
+    this.handlePrinters()
+  }
+  
+  handlePrinters = () => {
     this.setState({
       printers: this.getPrinters().map((element, index) => {
         const print =  { 
-          id: index, 
-          title: element.name, 
+          key: index,
+          value: element.name,
+          label: element.name, 
           isDefault: element.isDefault,  
           options: element.options
         }
@@ -30,36 +56,48 @@ export default class ModalPrinter extends Component {
       })
     })
   }
-  
-  handlePrinters = () => {
-    this.setState({
-      printers: this.getPrinters()
-    })
-  }
 
   getPrinters(){
-    let result = ipcRenderer.sendSync("buscar-impressoras", "Buscar todas as impressoras instaladas em meu notebook.")
+    let result = ipcRenderer.sendSync("buscar-impressoras", "Buscou impressoras!")
     console.log(result)
     return result
   }
 
-  handleSubmit(data, { resetForm }) {
-    console.log(data)
-    console.log(resetForm)
-    resetForm({ tech: 'react' });
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
   }
-
-  handleProgress(progress, event) {}
 
   render() {
     return (
-      <Container>
-        <Form onSubmit={this.handleSubmit}>
-          <Select name="tech" options={this.state.printers} />
-
-          <button type="submit">Send</button>
-        </Form>
-      </Container>
+      <div>
+        <Button color="danger" onClick={this.toggle}>Modal</Button>
+        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+          <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+          <ModalBody>
+            <Form onSubmit={this.handleFormSubmit}>
+              <FormGroup>
+                <Row>
+                <Select
+                      className="react-select"
+                      classNamePrefix="react-select"
+                      name="select-printers"
+                      value={this.state.selectPrinter}
+                      onChange={this.handleChangeSelectPrinter}
+                      options={this.state.selectedOptionsPrinters}
+                      isDisabled={this.state.lessPrinting}
+                    />
+                </Row>
+              </FormGroup>
+            </Form>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={() => {}}>Imprimir</Button>{' '}
+            <Button color="secondary" onClick={() => {}}>Cacelar</Button>
+          </ModalFooter>
+        </Modal>
+      </div>
       )
   }
 }
