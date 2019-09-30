@@ -18,23 +18,50 @@ import {
 
 import Select from 'react-select'  
 import { Container } from './styles';
+import { colourOptions, groupedOptions } from '../../Data';
+import CustomSelectInput from '../../components/CustomSelectInput'
 
 const { ipcRenderer } = window.require("electron")
 
+
+
 export default class ModalPrinter extends Component {
-  
+  groupStyles = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  };
+
+  groupBadgeStyles = {
+    backgroundColor: '#EBECF0',
+    borderRadius: '2em',
+    color: '#172B4D',
+    display: 'inline-block',
+    fontSize: 12,
+    fontWeight: 'normal',
+    lineHeight: '1',
+    minWidth: 1,
+    padding: '0.16666666666667em 0.5em',
+    textAlign: 'center',
+  };
+  options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+  ]
   constructor(params) {
     super(params)
     this.state = {
-      printers: [],
+      optionsPrinters: [],
       modal: false,
-      lessPrinting: false
+      lessPrinting: false,
+      selectPrinter: '',
+      copy: 0
     }
-
     this.toggle = this.toggle.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     console.log(this.state)
   }
 
@@ -44,18 +71,23 @@ export default class ModalPrinter extends Component {
   
   handlePrinters = () => {
     this.setState({
-      printers: this.getPrinters().map((element, index) => {
-        const print =  { 
+      optionsPrinters: this.getPrinters().map((element, index) => {
+        const print = {
           key: index,
           value: element.name,
-          label: element.name, 
-          isDefault: element.isDefault,  
-          options: element.options
+          label: element.name,
         }
         return print
       })
     })
   }
+
+  formatGroupLabel = data => (
+    <div style={this.groupStyles}>
+      <span>{data.label}</span>
+      <span style={this.groupBadgeStyles}>{data.options.length}</span>
+    </div>
+  );
 
   getPrinters(){
     let result = ipcRenderer.sendSync("buscar-impressoras", "Buscou impressoras!")
@@ -68,7 +100,13 @@ export default class ModalPrinter extends Component {
       modal: !prevState.modal
     }));
   }
-
+  
+  /**
+   * @function handleChangeSelectPrinter Seta a impressora escolhida no estado de selectPrinter
+   */
+  handleChangeSelectPrinter = selectPrinter => {
+    this.setState({ selectPrinter });
+  };
   render() {
     return (
       <div>
@@ -80,14 +118,23 @@ export default class ModalPrinter extends Component {
               <FormGroup>
                 <Row>
                 <Select
-                      className="react-select"
-                      classNamePrefix="react-select"
-                      name="select-printers"
-                      value={this.state.selectPrinter}
-                      onChange={this.handleChangeSelectPrinter}
-                      options={this.state.selectedOptionsPrinters}
-                      isDisabled={this.state.lessPrinting}
-                    />
+                  components={{ Input: CustomSelectInput }}
+                  defaultValue={colourOptions[1]}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  name="select-printers"
+                  value={this.state.selectPrinter}
+                  onChange={this.handleChangeSelectPrinter}
+                  options={this.state.optionsPrinters}
+                  isDisabled={this.state.lessPrinting}
+                  formatGroupLabel={this.formatGroupLabel}
+                  
+                  />
+                  <input
+                    onChange={e => this.setState({ copy: e.target.value })}
+                    value={this.state.copy}
+                  />
+                  <Select options={this.options} />
                 </Row>
               </FormGroup>
             </Form>
