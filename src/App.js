@@ -9,7 +9,7 @@ function App() {
   return (
    <Container>
      <GlobalStyles />
-     <Login />
+     <ModalPrinter />
    </Container>
   );
 }

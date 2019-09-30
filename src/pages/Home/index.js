@@ -1,12 +1,17 @@
 import React, { Fragment } from 'react';
 import ModalPrint from '../../components/ModalPrinter'
 import { Form, Input } from '@rocketseat/unform';
+const { ipcRenderer } = window.require('electron')
 // import { Container } from './styles';
 
 export default function Home() {
 
-  function handleModal() {
+  function getPrinters() {
+    const printer = ipcRenderer.sendSync("buscar-impressoras")
+    return printer
+  }
 
+  function handleModal() {
   }
 
   return (
