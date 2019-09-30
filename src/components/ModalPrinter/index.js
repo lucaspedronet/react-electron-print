@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Form, Select } from '@rocketseat/unform';
 import { Container } from './styles';
 
 const { ipcRenderer } = window.require("electron")
@@ -13,11 +13,21 @@ export default class ModalPrinter extends Component {
     }
   }
 
-  componentDidMount(){}
+  componentDidMount(){
+    console.log(this.state)
+  }
 
   componentWillMount(){
     this.setState({
-      printers: this.getPrinters()
+      printers: this.getPrinters().map((element, index) => {
+        const print =  { 
+          id: index, 
+          title: element.name, 
+          isDefault: element.isDefault,  
+          options: element.options
+        }
+        return print
+      })
     })
   }
   
@@ -33,9 +43,22 @@ export default class ModalPrinter extends Component {
     return result
   }
 
+  handleSubmit(data, { resetForm }) {
+    console.log(data)
+    console.log(resetForm)
+    resetForm({ tech: 'react' });
+  }
+
+  handleProgress(progress, event) {}
+
   render() {
     return (
       <Container>
+        <Form onSubmit={this.handleSubmit}>
+          <Select name="tech" options={this.state.printers} />
+
+          <button type="submit">Send</button>
+        </Form>
       </Container>
       )
   }
