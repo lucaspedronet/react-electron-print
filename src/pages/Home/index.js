@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import ModalPrint from '../../components/ModalPrinter'
-import { Form, Input } from '@rocketseat/unform';
+import Select from 'react-select'
 const { ipcRenderer } = window.require('electron')
 // import { Container } from './styles';
 
@@ -14,6 +14,12 @@ export default function Home() {
   function handleModal() {
   }
 
+  const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+  ]
+
   return (
     <Fragment>
       <div>
@@ -24,6 +30,7 @@ export default function Home() {
           Realizar impressão
         </button>
       </div>
+      <Select options={options} />
     </Fragment>
   );
 }

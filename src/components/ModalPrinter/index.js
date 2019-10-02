@@ -23,8 +23,6 @@ import CustomSelectInput from '../../components/CustomSelectInput'
 
 const { ipcRenderer } = window.require("electron")
 
-
-
 export default class ModalPrinter extends Component {
   groupStyles = {
     display: 'flex',
@@ -44,11 +42,27 @@ export default class ModalPrinter extends Component {
     padding: '0.16666666666667em 0.5em',
     textAlign: 'center',
   };
+
   options = [
     { value: 'chocolate', label: 'Chocolate' },
     { value: 'strawberry', label: 'Strawberry' },
     { value: 'vanilla', label: 'Vanilla' }
   ]
+
+  colourStyles = {
+    alignItems: 'center',
+  display: 'flex',
+
+  ':before': {
+    backgroundColor: "#ccc",
+    borderRadius: 10,
+    content: '" "',
+    display: 'block',
+    marginRight: 8,
+    height: 10,
+    width: 10,
+  }
+  }
   constructor(params) {
     super(params)
     this.state = {
@@ -118,8 +132,7 @@ export default class ModalPrinter extends Component {
               <FormGroup>
                 <Row>
                 <Select
-                  components={{ Input: CustomSelectInput }}
-                  defaultValue={colourOptions[1]}
+                  defaultValue={colourOptions[2]}
                   className="react-select"
                   classNamePrefix="react-select"
                   name="select-printers"
@@ -128,7 +141,7 @@ export default class ModalPrinter extends Component {
                   options={this.state.optionsPrinters}
                   isDisabled={this.state.lessPrinting}
                   formatGroupLabel={this.formatGroupLabel}
-                  
+                  styles={this.colourStyles}
                   />
                   <input
                     onChange={e => this.setState({ copy: e.target.value })}
