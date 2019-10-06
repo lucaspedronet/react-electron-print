@@ -32,12 +32,6 @@ ipcMain.on("buscar-impressoras", (event, arg) => {
   let windPrint = new BrowserWindow({ show: false });
   var printers = windPrint.webContents.getPrinters()
 
-  // windPrint.webContents.on("did-finish-load", () => {
-  //   windPrint.webContents.print({ silent: true }, (succees, err) => {
-  //     if(err) throw err;
-  //     console.log(succees)
-  //   })
-  // })
   event.returnValue = printers
 })
 
@@ -49,7 +43,7 @@ ipcMain.on("realizar-impressao", (event, arg) => {
   );
 
   windPrint.webContents.on('did-finish-load', () => {
-    windPrint.webContents.print( { silent: true, deviceName: arg.name },
+    windPrint.webContents.print({ silent: true, deviceName: arg.name },
       (success, error) => {
         if (error) {
           console.log(error);
