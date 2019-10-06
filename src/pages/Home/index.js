@@ -126,12 +126,12 @@ export default class Home extends Component {
         <div>
         <Row>
           <Colxx xxs="12" md="12" className="mb-5">
-            <button onClick={() => {}} >
+            <Button outline onClick={() => {}} >
               Cadastrar usuário
-            </button>
-            <button onClick={() => this.setState({ modal: true })} >
+            </Button>
+            <Button outline onClick={() => this.setState({ modal: true })} >
               Realizar impressão
-            </button>
+            </Button>
           </Colxx>
         </Row>
         </div>
