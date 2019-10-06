@@ -1,22 +1,15 @@
 import React, { Fragment, Component } from 'react';
-import ModalPrint from '../../components/ModalPrinter'
 import { 
   ModalHeader, 
   ModalFooter,
-  CardFooter,
   ModalBody, 
   FormGroup,
-  CardTitle,
-  CardBody,
   Button,
-  Input,
   Form,
-  Label,
   Modal, 
-  Card,
   Row, } from 'reactstrap';
 import Select from 'react-select';
-import { Colxx, Separator } from '../../components/CustomBootstrap';
+import { Colxx } from '../../components/CustomBootstrap';
 const { ipcRenderer } = window.require('electron')
 // import { Container } from './styles';
 
@@ -25,16 +18,22 @@ export default class Home extends Component {
     super(props)
     this.state = {
       selectedOptionsPrinters: [],
+      selectedOptionsCopy: [],
+      configPrint: null,
       selectPrinter: '',
+      lessprint: false,
       modal: false,
-      lessprint: null
+      selectCopy: ''
     }
     this.toggle = this.toggle.bind(this)
     this.handleChangeSelectPrinter = this.handleChangeSelectPrinter.bind(this)
+    this.handleChangeSelectCopy = this.handleChangeSelectCopy.bind(this)
+    
   }
 
   componentDidMount(){
     this.handleOptionsPrinters()
+    this.handleOptionsCopy()
   }
   
   toggle() {
@@ -47,9 +46,13 @@ export default class Home extends Component {
    * @function handleChangeSelectPrinter Seta a impressora escolhida no estado de selectPrinter
    */
   handleChangeSelectPrinter(selectPrinter) {
+    console.log(selectPrinter)
     this.setState({ selectPrinter });
   };
 
+   /**
+   * @function getPrinters Busca as impressoras instaladas no SO.
+   */
   getPrinters() {
     const printer = ipcRenderer.sendSync("buscar-impressoras");
     console.log(printer)
@@ -57,7 +60,7 @@ export default class Home extends Component {
   }
 
   /**
-   * @function getPrinters Retorna um Array de impressoras instaladas no seu Windows.
+   * @function handleOptionsPrinters Faz um modelo de opções de impressora para o Select, a impressora default é lista como 1ª opção.
    */
   handleOptionsPrinters = () => {
     const list = this.getPrinters()
@@ -84,8 +87,44 @@ export default class Home extends Component {
     return SELECT_PRINTER;
   };
 
+   /**
+   * @function handleChangeSelectPrinter Seta a quantidade copias escolhida no estado de copy.
+   */
+  handleChangeSelectCopy(selectCopy) {
+    console.log(selectCopy)
+    this.setState({ selectCopy });
+  };
+
+  handleOptionsCopy(){
+    const options = [
+      { value: '1', label: '1' },
+      { value: '2', label: '2' },
+      { value: '3', label: '3' }
+    ]
+    this.setState({ selectedOptionsCopy: options })
+    return options
+  }
+
+  handlePrint = () => {
+    const { selectPrinter, selectCopy } = this.state
+    const configPrint = {
+      name: selectPrinter.value,
+      numberCopy: selectCopy.value
+    }
+
+    console.log(configPrint.name)
+    console.log(configPrint.numberCopy)
+    const print = ipcRenderer.sendSync("realizar-impressao", configPrint)
+    this.toggle()
+    return print
+  }
+
   handleModal() {
-    const { selectPrinter, selectedOptionsPrinters } = this.state
+    const { 
+      selectPrinter, 
+      selectedOptionsPrinters, 
+      selectCopy, 
+      selectedOptionsCopy } = this.state
     return (
       <Modal isOpen={this.state.modal} toggle={this.toggle} >
         <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
@@ -93,7 +132,7 @@ export default class Home extends Component {
           <Form onSubmit={this.handleFormSubmit}>
           <FormGroup>
           <Row>
-            <Colxx xxs="12" md="12" className="mb-5">
+            <Colxx xxs="12" md="12" className="mb-1">
               <h6>
                 Selecione sua impressora!
               </h6>
@@ -108,12 +147,28 @@ export default class Home extends Component {
               />
             </Colxx>
           </Row>
+          <Row>
+            <Colxx xxs="12" md="12" className="mb-5">
+              <h6>
+                Selecione número de cópias!
+              </h6>
+              <Select
+                className="react-select"
+                classNamePrefix="react-select"
+                name="select-copy"
+                placeholder="Selecione número copias"
+                value={selectCopy}
+                onChange={this.handleChangeSelectCopy}
+                options={selectedOptionsCopy}
+              />
+            </Colxx>
+          </Row>
           </FormGroup>
           </Form>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={() => {}}>Imprimir</Button>{' '}
-            <Button color="secondary" onClick={() => {}}>Cacelar</Button>
+            <Button color="primary" onClick={this.handlePrint}>Imprimir</Button>{' '}
+            <Button color="secondary" onClick={this.toggle}>Cacelar</Button>
           </ModalFooter>
       </Modal>
       )

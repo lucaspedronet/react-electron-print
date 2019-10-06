@@ -29,18 +29,39 @@ function createWindow() {
 app.on("ready", createWindow)
 
 ipcMain.on("buscar-impressoras", (event, arg) => {
-  console.log(arg)
-  
-  const windPrint = new BrowserWindow({ show: false });
+  let windPrint = new BrowserWindow({ show: false });
   var printers = windPrint.webContents.getPrinters()
 
-  windPrint.webContents.on("did-finish-load", () => {
-    windPrint.webContents.print({ silent: true }, (succees, err) => {
-      if(err) throw err;
-      console.log(succees)
-    })
-  })
+  // windPrint.webContents.on("did-finish-load", () => {
+  //   windPrint.webContents.print({ silent: true }, (succees, err) => {
+  //     if(err) throw err;
+  //     console.log(succees)
+  //   })
+  // })
   event.returnValue = printers
+})
+
+ipcMain.on("realizar-impressao", (event, arg) => {
+  console.log(arg)
+  let windPrint = new BrowserWindow({ show: false });
+  windPrint.loadURL(
+    `file://${__dirname}/src/assets/PrintModall.txt`
+  );
+
+  windPrint.webContents.on('did-finish-load', () => {
+    windPrint.webContents.print( { silent: true, deviceName: arg.name },
+      (success, error) => {
+        if (error) {
+          console.log(error);
+          event.returnValue = false;
+        }
+        console.log(success);
+        event.returnValue = success;
+      })
+  })
+  
+  console.log('chegou aqui!')
+  return event.returnValue = false;
 })
 
 app.on("window-all-closed", function() {
